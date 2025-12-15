@@ -1,0 +1,890 @@
+/* Réinitialisation des styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styles généraux */
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.light {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.dark {
+  background-color: #333;
+  color: #837b7b;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+}
+
+nav ul li {
+  margin: 0 10px;
+  padding: 10px;
+  cursor: pointer;
+  color: #ecf0f1;
+}
+
+nav ul li.active {
+  background-color: #3498db;
+  border-radius: 5px;
+}
+
+nav button, nav select {
+  padding: 8px;
+  margin-left: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Conteneur principal */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.help-text {
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+/* Grille de cartes */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.card h3 {
+  margin: 5px;
+}
+
+.card .card p.remarks, .card p.species, .card p.sowing-months {
+  margin: 0 10px 10px;
+  text-align: center;
+  color: #292929;
+}
+
+.card p.remarks, .card p.sowing-months {
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+/* vCard pour ajouter un nouveau lieu ou graine */
+.add-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #4CAF50;
+  border: 2px dashed #4CAF50;
+  background-color: #f9f9f9;
+}
+
+.add-card:hover {
+  transform: scale(1.05);
+}
+
+.add-card span {
+  font-size: 48px;
+  color: #e74c3c;
+}
+
+/* Modale */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content label {
+  margin-bottom: 5px;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  margin-bottom: 15px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.modal-content select[multiple] {
+  height: 120px;
+}
+
+.modal-content textarea {
+  resize: vertical;
+}
+
+.modal-content #surface-container {
+  margin-bottom: 15px;
+}
+
+.modal-content button {
+  padding: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-content button:hover {
+  background-color: #2980b9;
+}
+
+.delete-btn {
+  background-color: #e74c3c !important;
+  margin-top: 10px;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b !important;
+}
+
+/* Barre de recherche */
+.search-filter {
+  margin-bottom: 20px;
+}
+
+.search-filter input {
+  padding: 8px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  nav {
+    flex-direction: column;
+  }
+
+  nav ul {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  nav ul li {
+    margin: 5px 0;
+  }
+
+  nav button,
+  nav select {
+    margin: 5px 0;
+  }
+}
+.search-filter {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
+.search-filter input,
+.search-filter select {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.search-filter input {
+  flex: 1;
+}
+
+.search-filter select {
+  width: 150px;
+}
+
+/* Styles pour la modale compacte */
+.modal-content {
+  max-height: 80vh; /* Limite à 80% de la hauteur de l'écran */
+  overflow-y: auto; /* Scroll si contenu trop long */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Styles pour la modale compacte */
+.modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Styles pour la sélection des mois */
+.month-selection {
+  margin-bottom: 15px;
+}
+
+.month-summary {
+  display: block;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.month-summary:hover {
+  background-color: #e0e0e0;
+}
+
+.month-buttons {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+}
+
+.month-button {
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background-color: #e0e0e0;
+  color: #333;
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s;
+  text-align: center;
+}
+
+.month-button.selected {
+  background-color: #4CAF50;
+  color: #fff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.month-button:hover {
+  background-color: #d0d0d0;
+}
+
+.month-button.selected:hover {
+  background-color: #45a049;
+}
+
+.month-button:focus {
+  outline: 2px solid #4CAF50;
+}
+
+/* Styles pour les sélecteurs de plage */
+.range-selection {
+  margin-bottom: 15px;
+}
+
+.range-summary {
+  display: block;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.range-summary:hover {
+  background-color: #e0e0e0;
+}
+
+.range-selectors {
+  display: none;
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.range-selectors select {
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.range-selectors span {
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .month-buttons {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .range-selectors {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+}
+/* Responsive pour petits écrans */
+@media (max-width: 600px) {
+  .month-buttons {
+    grid-template-columns: repeat(2, 1fr); /* 2 colonnes sur mobile */
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+}
+
+/* Responsive pour petits écrans */
+
+/* Styles généraux pour la grille de cartes */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+/* Styles pour toutes les vCards */
+.vcard {
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #fff;
+  box-shadow: 0 4px 5px rgba(209, 212, 208, 0.81);
+  transition: transform 0.2s;
+}
+
+.vcard:hover {
+  transform: scale(1.05);
+}
+
+.vcard img {
+  max-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 5px;
+  margin-bottom: 0px;
+}
+
+.vcard h3 {
+  font-size: 18px;
+  margin: 5px 0;
+  color: #333;
+}
+
+.vcard p {
+  font-size: 14px;
+  margin: 5px 0;
+  color: #555;
+}
+
+
+
+/* Style spécifique pour la carte d'ajout */
+.vcard.add-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: #4CAF50;
+  border: 2px dashed #4CAF50;
+  background-color: #f9f9f9;
+}
+
+.vcard.add-card:hover {
+  background-color: #e8f5e9;
+  border: 2px dashed #4CAF50;
+
+}
+/* Styles pour la modale */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal[style*="display: flex"] {
+  display: flex !important;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content .close {
+  float: right;
+  font-size: 24px;
+  cursor: pointer;
+  color: #333;
+}
+
+.modal-content .close:hover {
+  color: #f44336;
+}
+
+.modal-content h2 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.modal-content label {
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.modal-content input:focus,
+.modal-content select:focus,
+.modal-content textarea:focus {
+  border-color: #4CAF50;
+  outline: none;
+}
+
+.modal-content textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-content button {
+  padding: 10px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.modal-content button:hover {
+  background-color: #45a049;
+}
+
+.modal-content button.delete-btn {
+  background-color: #f44336;
+}
+
+.modal-content button.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Styles pour les filtres (compatibilité avec .location-filter) */
+.search-filter {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.search-filter select {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Styles pour le texte d'aide */
+.help-text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+/* Styles pour la navigation */
+nav {
+  background-color: #f4f4f4;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 15px;
+  margin: 0;
+  padding: 0;
+}
+
+nav ul li {
+  cursor: pointer;
+  padding: 8px 15px;
+  border-radius: 4px;
+  font-size: 16px;
+  color: #333;
+}
+
+nav ul li.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+nav ul li:hover {
+  background-color: #e0e0e0;
+}
+
+/* Styles pour le thème sombre */
+body.dark .vcard {
+  background-color: #333;
+  border-color: #444;
+}
+
+body.dark .vcard h3,
+body.dark .vcard p strong {
+  color: #fff;
+}
+
+body.dark .vcard p {
+  color: #bbb;
+}
+
+body.dark .vcard.add-card {
+  background-color: #444;
+  border-color: #4CAF50;
+}
+
+body.dark .vcard.add-card:hover {
+  background-color: #555;
+}
+
+body.dark .modal-content {
+  background-color: #333;
+}
+
+body.dark .modal-content h2,
+body.dark .modal-content label,
+body.dark .modal-content .close {
+  color: #fff;
+}
+
+body.dark .modal-content input,
+body.dark .modal-content select,
+body.dark .modal-content textarea {
+  background-color: #444;
+  border-color: #555;
+  color: #fff;
+}
+
+body.dark .modal-content input:focus,
+body.dark .modal-content select:focus,
+body.dark .modal-content textarea:focus {
+  border-color: #4CAF50;
+}
+
+body.dark .help-text {
+  color: #bbb;
+}
+
+body.dark nav {
+  background-color: #222;
+}
+
+body.dark nav ul li {
+  color: #ddd;
+}
+
+body.dark nav ul li.active {
+  background-color: #4CAF50;
+}
+
+body.dark nav ul li:hover {
+  background-color: #333;
+}
+
+#culture-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px; /* Ajusté pour plus d'espace */
+}
+
+.seed-address-filters,
+.category-filters,
+.month-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.month-filter {
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.filter-select {
+  padding: 6px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #fff;
+  transition: all 0.2s ease;
+}
+
+.filter-select:focus {
+  border-color: #4caf50;
+  outline: none;
+}
+
+.filter-select option {
+  padding: 6px;
+}
+
+#harvest-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: 1000px; /* Pour l’espace */
+}
+
+.culture-address-filtres,
+.category-filtres,
+.month-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.vcard.culture-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 200px;
+  margin: 10px;
+  background-color: #fff;
+}
+
+.vcard-header {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.vcard-date, .vcard-address, .vcard-location {
+  color: #888;
+  font-size: 0.9em;
+  text-align: left;
+}
+
+.vcard-address {
+  text-align: left;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.vcard-age {
+  font-weight: bold;
+  color: #000;
+  font-size: 1em;
+  text-align: right;
+}
+
+.vcard-image {
+  max-width: 100%;
+  height: 100px;
+  object-fit: cover;
+  margin: 10px 0;
+}
+
+.vcard-plant-name {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0 5px;
+}
+
+.vcard-details {
+  font-size: 1em;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.vcard-location {
+  font-size: 0.8em;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.vcard .alert {
+  color: #d32f2f;
+  font-size: 0.9em;
+  text-align: center;
+  margin: 5px 0;
+}
+
+.vcard.add-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  cursor: pointer;
+}
+
+.vcard.add-card span {
+  font-size: 1.2em;
+  color: #555;
+}
+
+.modal-content {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+#culture-form select,
+#culture-form input,
+#culture-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.inline-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inline-select {
+  width: 40%;
+}
+
+.inline-input {
+  width: 60%;
+}
+
+#culture-form button {
+  padding: 10px;
+  margin: 5px;
+}
+.vcard-total-quantity {
+  font-size: 0.9em;
+  color: #666;
+  text-align: center;
+  margin: 5px 0;
+}

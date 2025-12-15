@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/styles.css">
+  <title>Plant Manager</title>
+</head>
+<body class="light">
+  <nav>
+    <ul>
+            <li data-tab="seeds" data-i18n="tabs.seeds">Graines</li>
+      <li class="active" data-tab="locations" data-i18n="tabs.locations">Lieux</li>
+      <li data-tab="cultures" data-i18n="tabs.cultures">Cultures</li>
+      <li data-tab="harvests" data-i18n="tabs.harvests">Récoltes</li>
+      <li data-tab="bilan" data-i18n="tabs.bilan">Bilan</li>
+    </ul>
+    <button id="theme-toggle" data-i18n="buttons.theme"></button>
+    <select id="language-select">
+      <option value="fr">Français</option>
+      <option value="en">English</option>
+      <option value="pt">Português</option>
+    </select>
+  </nav>
+
+  <div class="container">
+    <div class="help-text" data-i18n="help.locations"></div>
+    <div id="tools-container"></div>
+    <div class="card-grid" id="card-grid"></div>
+  </div>
+
+  <script src="/js/translations.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/locations.js"></script>
+  <script src="/js/seeds.js"></script>
+  <script src="/js/cultures.js"></script>
+  <script src="/js/harvests.js"></script>
+  <script src="/js/reports.js"></script>
+<script>
+  // Gestion de la langue
+  document.getElementById('language-select').addEventListener('change', (e) => {
+    setLanguage(e.target.value);
+  });
+
+  // Gestion du thème
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    toggleTheme();
+  });
+
+  // Gestion des onglets
+  const tabs = document.querySelectorAll('nav ul li');
+  const helpText = document.querySelector('.help-text');
+  const toolsContainer = document.getElementById('tools-container');
+  let activeTab = 'locations';
+
+  function switchTab(tabName) {
+    console.log(`Switching to tab: ${tabName}`);
+    tabs.forEach(tab => tab.classList.remove('active'));
+    const tabElement = document.querySelector(`[data-tab="${tabName}"]`);
+    if (tabElement) {
+      tabElement.classList.add('active');
+    } else {
+      console.error(`Tab element not found for: ${tabName}`);
+    }
+    helpText.setAttribute('data-i18n', `help.${tabName}`);
+    activeTab = tabName;
+    // Vider le conteneur des filtres
+    toolsContainer.innerHTML = '';
+    // Afficher/masquer les filtres spécifiques aux lieux
+    document.querySelectorAll('.location-filter').forEach(filter => {
+      filter.style.display = tabName === 'locations' ? 'inline-block' : 'none';
+    });
+    applyTranslations();
+    console.log(`Dispatching event for tab: ${tabName}`);
+    if (tabName === 'locations') {
+      document.dispatchEvent(new Event('locationsUpdated'));
+    } else if (tabName === 'seeds') {
+      document.dispatchEvent(new Event('seedsUpdated'));
+    } else if (tabName === 'cultures') {
+      document.dispatchEvent(new Event('culturesUpdated'));
+    } else if (tabName === 'harvests') {
+      document.dispatchEvent(new Event('harvestsUpdated'));
+    } else if (tabName === 'bilan') {
+      document.dispatchEvent(new Event('reportsUpdated'));
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.removeEventListener('click', handleTabClick); // Nettoyer les anciens écouteurs
+    tab.addEventListener('click', handleTabClick);
+  });
+
+  function handleTabClick(e) {
+    const tabName = e.currentTarget.getAttribute('data-tab');
+    console.log(`Tab clicked: ${tabName}`);
+    if (tabName) {
+      switchTab(tabName);
+    }
+  }
+
+  // Gestionnaire unique pour les clics sur les vCards
+  document.addEventListener('click', async (e) => {
+    if (activeTab === 'bilan') return; // Ignorer les clics sur les cartes dans l'onglet Bilan
+    const card = e.target.closest('.location-card') || e.target.closest('.seed-card') || e.target.closest('.culture-card') || e.target.closest('.harvest-card');
+    const addCard = e.target.closest('.add-card');
+
+    if (card && card.dataset.id) {
+      console.log(`Clic sur carte avec ID: ${card.dataset.id}, onglet actif: ${activeTab}`);
+      if (activeTab === 'locations') {
+        const locations = await loadLocations();
+        const location = locations.find(loc => loc.id === card.dataset.id);
+        if (location) showLocationModal(location);
+      } else if (activeTab === 'seeds') {
+        const seeds = await loadSeeds();
+        const categories = await loadSpecies();
+        const seed = seeds.find(s => s.id === card.dataset.id);
+        if (seed) showSeedModal(seed, categories);
+      } else if (activeTab === 'cultures') {
+        const cultures = await loadCultures();
+        const locations = await loadLocations();
+        const seeds = await loadSeeds();
+        const culture = cultures.find(c => c.id === card.dataset.id);
+        if (culture) showCultureModal(culture, locations, seeds);
+      } else if (activeTab === 'harvests') {
+        const harvests = await loadHarvests();
+        const cultures = await loadCultures();
+        const harvest = harvests.find(h => h.id === card.dataset.id);
+        if (harvest) showHarvestModal(harvest, cultures);
+      }
+    } else if (addCard) {
+      console.log(`Clic sur carte d'ajout, onglet actif: ${activeTab}`);
+      if (document.querySelector('.modal')) {
+        console.log('Modale déjà ouverte, annulation.');
+        return;
+      }
+      if (activeTab === 'locations') {
+        showLocationModal();
+      } else if (activeTab === 'seeds') {
+        const categories = await loadSpecies();
+        showSeedModal(null, categories);
+      } else if (activeTab === 'cultures') {
+        const locations = await loadLocations();
+        const seeds = await loadSeeds();
+        showCultureModal(null, locations, seeds);
+      } else if (activeTab === 'harvests') {
+        const cultures = await loadCultures();
+        showHarvestModal(null, cultures);
+      }
+    }
+  });
+
+  // Initialisation
+  console.log('Initialisation des modules');
+  initLocations();
+  initSeeds();
+  initCultures();
+  initHarvests();
+  initReports();
+  switchTab('cultures'); // Onglet par défaut
+</script>
+</body>
+</html>

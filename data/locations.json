@@ -1,0 +1,68 @@
+[
+  {
+    "id": "location_1765649880016",
+    "Nom": "Parcelle à légumes",
+    "Adresse": "Maison Antenna",
+    "Type": "Parcelle",
+    "Surface": 4,
+    "Image": "/data/icons/parcelle.png"
+  },
+  {
+    "id": "location_1765650025332",
+    "Nom": "Parcelle à légumes",
+    "Adresse": "Maison OBF",
+    "Type": "Parcelle",
+    "Surface": 5,
+    "Image": "/data/icons/parcelle.png"
+  },
+  {
+    "id": "location_1765650086431",
+    "Nom": "Parcelle à légumes",
+    "Adresse": "Maison Free IT",
+    "Type": "Parcelle",
+    "Surface": 6,
+    "Image": "/data/icons/parcelle.png"
+  },
+  {
+    "id": "location_1765650178664",
+    "Nom": "Pot à aromatiques",
+    "Adresse": "Maison Antenna",
+    "Type": "Pot",
+    "Image": "/data/icons/pot.png"
+  },
+  {
+    "id": "location_1765650198230",
+    "Nom": "Pot à aromatiques",
+    "Adresse": "Maison OBF",
+    "Type": "Pot",
+    "Image": "/data/icons/pot.png"
+  },
+  {
+    "id": "location_1765650231456",
+    "Nom": "Pot à aromatiques",
+    "Adresse": "Maison Free IT",
+    "Type": "Pot",
+    "Image": "/data/icons/pot.png"
+  },
+  {
+    "id": "location_1765650682348",
+    "Nom": "Caissette de plantons",
+    "Adresse": "Maison Antenna",
+    "Type": "Caissette",
+    "Image": "/data/icons/caissette.png"
+  },
+  {
+    "id": "location_1765650787700",
+    "Nom": "Caissette de plantons",
+    "Adresse": "Maison OBF",
+    "Type": "Caissette",
+    "Image": "/data/icons/caissette.png"
+  },
+  {
+    "id": "location_1765650917655",
+    "Nom": "Caissette de plantons",
+    "Adresse": "Maison Free IT",
+    "Type": "Caissette",
+    "Image": "/data/icons/caissette.png"
+  }
+]

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🌱</text></svg>" />
+  <title>🌱 Jardinapp - Connexion</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    nav { display: none; }
+    .login-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 30px;
+      background: linear-gradient(135deg, var(--card) 0%, var(--card-alt) 100%);
+      border-radius: 16px;
+      border: 2px solid var(--border-color);
+      box-shadow: 0 8px 32px rgba(61, 40, 23, 0.15);
+      text-align: center;
+    }
+    .login-title { font-size: 32px; margin-bottom: 10px; color: var(--accent); }
+    .login-subtitle { font-size: 18px; color: var(--muted); margin-bottom: 25px; font-weight: 500; }
+    .auth-tabs {
+      display: flex;
+      margin-bottom: 25px;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 2px solid var(--border-color);
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px 20px;
+      background: var(--card-alt);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--muted);
+      transition: all 0.3s ease;
+    }
+    .auth-tab:hover { background: var(--card); }
+    .auth-tab.active { background: var(--accent); color: white; }
+    .auth-form { display: flex; flex-direction: column; gap: 16px; }
+    .auth-form.hidden { display: none; }
+    .form-group { position: relative; text-align: left; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--accent); font-size: 14px; }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+    .form-group input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(45, 80, 22, 0.1); }
+    .form-group input::placeholder { color: var(--muted); font-weight: 400; }
+    .submit-btn {
+      padding: 14px 24px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-strong));
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .submit-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(45, 80, 22, 0.2); }
+    .submit-btn:active { transform: translateY(0); }
+    .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+    .message {
+      display: none;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+    .message.error { background: #fee; border: 2px solid #fcc; color: #c33; }
+    .message.success { background: #efe; border: 2px solid #cfc; color: #3a3; }
+    .message.show { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+    .setup-info {
+      margin-bottom: 20px;
+      padding: 16px;
+      background: rgba(212, 245, 192, 0.3);
+      border-left: 4px solid var(--accent);
+      border-radius: 8px;
+      text-align: left;
+      font-size: 14px;
+      color: var(--accent);
+    }
+    .setup-info strong { display: block; margin-bottom: 6px; font-size: 15px; }
+    .login-links {
+      margin-top: 25px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-color);
+    }
+    .login-links a {
+      padding: 10px 16px;
+      background: var(--card-alt);
+      color: var(--accent);
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    .login-links a:hover { background: var(--accent); color: white; }
+    @media (max-width: 480px) {
+      .login-container { max-width: 100%; padding: 30px 20px; }
+      .login-title { font-size: 28px; }
+      .login-subtitle { font-size: 16px; }
+      .submit-btn { padding: 12px 20px; font-size: 14px; }
+    }
+    footer { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; }
+  </style>
+</head>
+<body class="light">
+  <div class="login-container">
+    <div class="login-title">🌱 Jardinapp</div>
+    <div class="login-subtitle" id="subtitle">Gestion de maraîchage</div>
+
+    <!-- Info première installation -->
+    <div class="setup-info" id="setup-info" style="display: none;">
+      <strong>🎉 Bienvenue !</strong>
+      Créez votre premier compte administrateur pour commencer à utiliser Jardinapp.
+    </div>
+
+    <!-- Onglets Connexion / Inscription (inscription masquée si utilisateurs existent) -->
+    <div class="auth-tabs" id="auth-tabs" style="display: none;">
+      <button class="auth-tab active" data-tab="login">🔓 Connexion</button>
+      <button class="auth-tab" data-tab="register">📝 Inscription</button>
+    </div>
+
+    <!-- Messages -->
+    <div class="message" id="message"></div>
+
+    <!-- Formulaire de connexion -->
+    <form class="auth-form" id="login-form">
+      <div class="form-group">
+        <label for="login-username">Nom d'utilisateur ou Email</label>
+        <input type="text" id="login-username" placeholder="Entrez votre identifiant" required autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="login-password">Mot de passe</label>
+        <input type="password" id="login-password" placeholder="Entrez votre mot de passe" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="submit-btn" id="login-btn">🔓 Se connecter</button>
+    </form>
+
+    <!-- Formulaire d'inscription -->
+    <form class="auth-form hidden" id="register-form">
+      <div class="form-group">
+        <label for="register-username">Nom d'utilisateur</label>
+        <input type="text" id="register-username" placeholder="Choisissez un nom d'utilisateur" required minlength="3" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label for="register-email">Email</label>
+        <input type="email" id="register-email" placeholder="Entrez votre email" required autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label for="register-password">Mot de passe</label>
+        <input type="password" id="register-password" placeholder="Minimum 6 caractères" required minlength="6" autocomplete="new-password">
+      </div>
+      <div class="form-group">
+        <label for="register-confirm">Confirmer le mot de passe</label>
+        <input type="password" id="register-confirm" placeholder="Confirmez votre mot de passe" required minlength="6" autocomplete="new-password">
+      </div>
+      <button type="submit" class="submit-btn" id="register-btn">📝 Créer mon compte</button>
+    </form>
+
+    <div class="login-links">
+      <a href="overview.html">📊 Voir le rapport (anonyme)</a>
+    </div>
+  </div>
+
+  <footer class="app-footer">
+    <div class="footer-left">Jardinapp - Ecoboost.world - Antenna Foundation — Licence: MIT</div>
+  </footer>
+
+  <script src="./js/auth.js"></script>
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const authTabs = document.querySelectorAll('.auth-tab');
+    const message = document.getElementById('message');
+    const setupInfo = document.getElementById('setup-info');
+    const subtitle = document.getElementById('subtitle');
+
+    // Afficher un message
+    function showMessage(text, type = 'error') {
+      message.textContent = text;
+      message.className = `message ${type} show`;
+      setTimeout(() => message.classList.remove('show'), 4000);
+    }
+
+    // Changer d'onglet
+    function switchTab(tab) {
+      authTabs.forEach(t => t.classList.remove('active'));
+      document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+      
+      if (tab === 'login') {
+        loginForm.classList.remove('hidden');
+        registerForm.classList.add('hidden');
+        subtitle.textContent = 'Connectez-vous';
+      } else {
+        loginForm.classList.add('hidden');
+        registerForm.classList.remove('hidden');
+        subtitle.textContent = 'Créez votre compte';
+      }
+    }
+
+    // Gestion des onglets
+    authTabs.forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+    });
+
+    // Vérifier si déjà authentifié
+    (async function init() {
+      if (checkAuth()) {
+        const result = await verifySession();
+        if (result.authenticated) {
+          window.location.href = 'index.html';
+          return;
+        }
+      }
+
+      // Vérifier si c'est la première installation
+      const hasUsers = await checkSetup();
+      if (!hasUsers) {
+        setupInfo.style.display = 'block';
+        switchTab('register');
+        document.getElementById('auth-tabs').style.display = 'none';
+        subtitle.textContent = 'Créez votre compte administrateur';
+      }
+    })();
+
+    // Connexion
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('login-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Connexion...';
+
+      const username = document.getElementById('login-username').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      const result = await login(username, password);
+
+      if (result.success) {
+        showMessage('✅ Connexion réussie ! Redirection...', 'success');
+        setTimeout(() => window.location.href = 'index.html', 500);
+      } else {
+        showMessage('❌ ' + (result.error || 'Identifiants incorrects'));
+        btn.disabled = false;
+        btn.textContent = '🔓 Se connecter';
+        document.getElementById('login-password').value = '';
+        document.getElementById('login-password').focus();
+      }
+    });
+
+    // Inscription
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('register-btn');
+      btn.disabled = true;
+      btn.textContent = '⏳ Création...';
+
+      const username = document.getElementById('register-username').value.trim();
+      const email = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+      const confirm = document.getElementById('register-confirm').value;
+
+      // Validation
+      if (password !== confirm) {
+        showMessage('❌ Les mots de passe ne correspondent pas');
+        btn.disabled = false;
+        btn.textContent = '📝 Créer mon compte';
+        return;
+      }
+
+      const result = await register(username, email, password);
+
+      if (result.success) {
+        showMessage('✅ Compte créé ! Redirection...', 'success');
+        setTimeout(() => window.location.href = 'index.html', 500);
+      } else {
+        showMessage('❌ ' + (result.error || 'Erreur lors de l\'inscription'));
+        btn.disabled = false;
+        btn.textContent = '📝 Créer mon compte';
+      }
+    });
+
+    // Focus initial
+    document.getElementById('login-username').focus();
+  </script>
+</body>
+</html>

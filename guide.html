@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Guide d'utilisation de Jardin App - Application de gestion de cultures maraîchères">
+    <title>📚 Guide - Jardin App</title>
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/guide.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>">
+</head>
+<body>
+    
+    <!-- ============================================ -->
+    <!-- HEADER -->
+    <!-- ============================================ -->
+    <header class="guide-header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <span class="logo-icon">🌱</span>
+                    <h1 class="logo-text">Jardin App</h1>
+                </div>
+                
+                <div class="header-actions">
+                    <!-- Sélecteur de langue -->
+                    <div class="language-selector">
+                        <button id="langBtn" class="btn-lang" aria-label="Changer de langue">
+                            <span id="currentLang">🇫🇷 FR</span>
+                        </button>
+                        <div id="langDropdown" class="lang-dropdown">
+                            <button class="lang-option" data-lang="fr">🇫🇷 Français</button>
+                            <button class="lang-option" data-lang="en">🇬🇧 English</button>
+                            <button class="lang-option" data-lang="pt">🇵🇹 Português</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Bouton Admin -->
+                    <a href="index.html" class="btn btn-primary">
+                        <span data-i18n="header.admin">Espace Admin</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============================================ -->
+    <!-- HERO -->
+    <!-- ============================================ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title" data-i18n="hero.title">
+                    📚 Guide d'utilisation
+                </h2>
+                <p class="hero-subtitle" data-i18n="hero.subtitle">
+                    Apprenez à utiliser Jardin App pour gérer vos cultures maraîchères
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- NAVIGATION RAPIDE -->
+    <!-- ============================================ -->
+    <section class="quick-nav">
+        <div class="container">
+            <div class="quick-nav-grid">
+                <a href="#overview" class="quick-nav-card">
+                    <span class="card-icon">🎯</span>
+                    <h3 data-i18n="nav.overview">Vue d'ensemble</h3>
+                </a>
+                <a href="#seeds" class="quick-nav-card">
+                    <span class="card-icon">🌱</span>
+                    <h3 data-i18n="nav.seeds">Graines</h3>
+                </a>
+                <a href="#locations" class="quick-nav-card">
+                    <span class="card-icon">📍</span>
+                    <h3 data-i18n="nav.locations">Lieux</h3>
+                </a>
+                <a href="#cultures" class="quick-nav-card">
+                    <span class="card-icon">🌿</span>
+                    <h3 data-i18n="nav.cultures">Cultures</h3>
+                </a>
+                <a href="#harvests" class="quick-nav-card">
+                    <span class="card-icon">🧺</span>
+                    <h3 data-i18n="nav.harvests">Récoltes</h3>
+                </a>
+                <a href="#workflow" class="quick-nav-card">
+                    <span class="card-icon">🔄</span>
+                    <h3 data-i18n="nav.workflow">Flux de travail</h3>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- VUE D'ENSEMBLE -->
+    <!-- ============================================ -->
+    <section id="overview" class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🎯</span>
+                    <span data-i18n="overview.title">Vue d'ensemble</span>
+                </h2>
+            </div>
+            
+            <div class="content-box">
+                <p class="intro-text" data-i18n="overview.intro">
+                    <strong>Jardin App</strong> est une application complète pour gérer vos cultures maraîchères. 
+                    Elle vous permet de suivre vos graines, lieux de culture, planifier vos cultures et enregistrer vos récoltes.
+                </p>
+                
+                <div class="feature-grid">
+                    <a href="#seeds" class="feature-card feature-card-link">
+                        <span class="feature-icon">🌱</span>
+                        <h3 data-i18n="overview.feature1.title">Bibliothèque de graines</h3>
+                        <p data-i18n="overview.feature1.desc">
+                            Centralisez toutes vos variétés de graines avec photos, descriptions et informations de culture
+                        </p>
+                    </a>
+                    
+                    <a href="#locations" class="feature-card feature-card-link">
+                        <span class="feature-icon">📍</span>
+                        <h3 data-i18n="overview.feature2.title">Gestion des lieux</h3>
+                        <p data-i18n="overview.feature2.desc">
+                            Organisez vos parcelles, serres et zones de culture avec leurs caractéristiques
+                        </p>
+                    </a>
+                    
+                    <a href="#cultures" class="feature-card feature-card-link">
+                        <span class="feature-icon">🌿</span>
+                        <h3 data-i18n="overview.feature3.title">Suivi des cultures</h3>
+                        <p data-i18n="overview.feature3.desc">
+                            Planifiez et suivez vos cultures de la plantation à la récolte
+                        </p>
+                    </a>
+                    
+                    <a href="#harvests" class="feature-card feature-card-link">
+                        <span class="feature-icon">🧺</span>
+                        <h3 data-i18n="overview.feature4.title">Registre des récoltes</h3>
+                        <p data-i18n="overview.feature4.desc">
+                            Enregistrez vos récoltes avec quantités, qualité et observations
+                        </p>
+                    </a>
+                    
+                    <a href="#workflow" class="feature-card feature-card-link">
+                        <span class="feature-icon">📊</span>
+                        <h3 data-i18n="overview.feature5.title">Bilans et statistiques</h3>
+                        <p data-i18n="overview.feature5.desc">
+                            Analysez vos performances avec des graphiques et rapports détaillés
+                        </p>
+                    </a>
+                    
+                    <a href="#workflow" class="feature-card feature-card-link">
+                        <span class="feature-icon">🌍</span>
+                        <h3 data-i18n="overview.feature6.title">Multi-langues</h3>
+                        <p data-i18n="overview.feature6.desc">
+                            Interface disponible en français, anglais et portuguais
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FLUX DE TRAVAIL -->
+    <!-- ============================================ -->
+    <section id="workflow" class="guide-section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🔄</span>
+                    <span data-i18n="workflow.title">Flux de travail</span>
+                </h2>
+            </div>
+            
+            <div class="workflow-diagram">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-icon">🌱</div>
+                        <h3 data-i18n="workflow.step1.title">Ajouter des graines</h3>
+                        <p data-i18n="workflow.step1.desc">
+                            Créez votre bibliothèque de variétés avec toutes les informations nécessaires
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-icon">📍</div>
+                        <h3 data-i18n="workflow.step2.title">Définir les lieux</h3>
+                        <p data-i18n="workflow.step2.desc">
+                            Enregistrez vos parcelles et zones de culture
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-icon">🌿</div>
+                        <h3 data-i18n="workflow.step3.title">Planifier une culture</h3>
+                        <p data-i18n="workflow.step3.desc">
+                            Combinez une graine et un lieu pour créer une culture
+                        </p>
+                        <div class="formula">
+                            <span class="formula-item">🌱 Graine</span>
+                            <span class="formula-operator">+</span>
+                            <span class="formula-item">📍 Lieu</span>
+                            <span class="formula-operator">=</span>
+                            <span class="formula-result">🌿 Culture</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-icon">🧺</div>
+                        <h3 data-i18n="workflow.step4.title">Enregistrer les récoltes</h3>
+                        <p data-i18n="workflow.step4.desc">
+                            Liez vos récoltes aux cultures pour un suivi complet
+                        </p>
+                        <div class="formula">
+                            <span class="formula-item">🌿 Culture</span>
+                            <span class="formula-operator">→</span>
+                            <span class="formula-result">🧺 Récolte</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="workflow-arrow">↓</div>
+                
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <div class="step-icon">📊</div>
+                        <h3 data-i18n="workflow.step5.title">Analyser les bilans</h3>
+                        <p data-i18n="workflow.step5.desc">
+                            Consultez vos statistiques et performances
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- GRAINES -->
+    <!-- ============================================ -->
+    <section id="seeds" class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🌱</span>
+                    <span data-i18n="seeds.title">Gestion des graines</span>
+                </h2>
+            </div>
+            
+            <div class="content-box">
+                <h3 data-i18n="seeds.add.title">➕ Ajouter une graine</h3>
+                <ol class="step-list">
+                    <li data-i18n="seeds.add.step1">Accédez à l'espace admin et cliquez sur <strong>Graines</strong></li>
+                    <li data-i18n="seeds.add.step2">Cliquez sur le bouton <strong>+ Nouvelle graine</strong></li>
+                    <li data-i18n="seeds.add.step3">Remplissez le formulaire avec les informations</li>
+                    <li data-i18n="seeds.add.step4">Ajoutez une photo (optionnel)</li>
+                    <li data-i18n="seeds.add.step5">Cliquez sur <strong>Enregistrer</strong></li>
+                </ol>
+                
+                <div class="info-box">
+                    <span class="info-icon">💡</span>
+                    <div>
+                        <strong data-i18n="seeds.tip.title">Astuce :</strong>
+                        <span data-i18n="seeds.tip.desc">
+                            Ajoutez des images pour faciliter l'identification visuelle de vos variétés
+                        </span>
+                    </div>
+                </div>
+                
+                <h3 data-i18n="seeds.edit.title">✏️ Modifier une graine</h3>
+                <ol class="step-list">
+                    <li data-i18n="seeds.edit.step1">Cliquez sur la carte de la graine à modifier</li>
+                    <li data-i18n="seeds.edit.step2">Modifiez les informations souhaitées</li>
+                    <li data-i18n="seeds.edit.step3">Cliquez sur <strong>Enregistrer</strong></li>
+                </ol>
+                
+                <h3 data-i18n="seeds.delete.title">🗑️ Supprimer une graine</h3>
+                <div class="warning-box">
+                    <span class="warning-icon">⚠️</span>
+                    <div>
+                        <strong data-i18n="seeds.delete.warning.title">Attention :</strong>
+                        <span data-i18n="seeds.delete.warning.desc">
+                            La suppression d'une graine supprimera également toutes les cultures associées
+                        </span>
+                    </div>
+                </div>
+                <ol class="step-list">
+                    <li data-i18n="seeds.delete.step1">Cliquez sur la carte de la graine</li>
+                    <li data-i18n="seeds.delete.step2">Cliquez sur le bouton <strong>Supprimer</strong></li>
+                    <li data-i18n="seeds.delete.step3">Confirmez la suppression</li>
+                </ol>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- LIEUX -->
+    <!-- ============================================ -->
+    <section id="locations" class="guide-section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">📍</span>
+                    <span data-i18n="locations.title">Gestion des lieux</span>
+                </h2>
+            </div>
+            
+            <div class="content-box">
+                <h3 data-i18n="locations.add.title">➕ Ajouter un lieu</h3>
+                <ol class="step-list">
+                    <li data-i18n="locations.add.step1">Accédez à <strong>Lieux</strong> dans le menu admin</li>
+                    <li data-i18n="locations.add.step2">Cliquez sur <strong>+ Nouveau lieu</strong></li>
+                    <li data-i18n="locations.add.step3">Définissez le nom et le type (Serre, Plein champ, etc.)</li>
+                    <li data-i18n="locations.add.step4">Indiquez la surface et les caractéristiques</li>
+                    <li data-i18n="locations.add.step5">Enregistrez</li>
+                </ol>
+                
+                <div class="example-box">
+                    <h4 data-i18n="locations.examples.title">📋 Exemples de lieux</h4>
+                    <ul class="example-list">
+                        <li><strong>Serre 1</strong> - 200m² - Chauffée</li>
+                        <li><strong>Parcelle A</strong> - 500m² - Plein champ</li>
+                        <li><strong>Tunnel 3</strong> - 150m² - Non chauffé</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- CULTURES -->
+    <!-- ============================================ -->
+    <section id="cultures" class="guide-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🌿</span>
+                    <span data-i18n="cultures.title">Gestion des cultures</span>
+                </h2>
+            </div>
+            
+            <div class="content-box">
+                <div class="highlight-box">
+                    <h3 data-i18n="cultures.concept.title">🎯 Concept</h3>
+                    <p data-i18n="cultures.concept.desc">
+                        Une <strong>culture</strong> est créée en associant une <strong>graine</strong> à un <strong>lieu</strong>. 
+                        Elle représente une plantation spécifique avec ses dates et caractéristiques.
+                    </p>
+                    <div class="formula-large">
+                        <span class="formula-item">🌱 Graine</span>
+                        <span class="formula-operator">+</span>
+                        <span class="formula-item">📍 Lieu</span>
+                        <span class="formula-operator">=</span>
+                        <span class="formula-result">🌿 Culture</span>
+                    </div>
+                </div>
+                
+                <h3 data-i18n="cultures.add.title">➕ Créer une culture</h3>
+                <ol class="step-list">
+                    <li data-i18n="cultures.add.step1">Accédez à <strong>Cultures</strong></li>
+                    <li data-i18n="cultures.add.step2">Cliquez sur <strong>+ Nouvelle culture</strong></li>
+                    <li data-i18n="cultures.add.step3">Sélectionnez une <strong>graine</strong> dans la liste</li>
+                    <li data-i18n="cultures.add.step4">Sélectionnez un <strong>lieu</strong></li>
+                    <li data-i18n="cultures.add.step5">Définissez la date de plantation</li>
+                    <li data-i18n="cultures.add.step6">Ajoutez des notes (optionnel)</li>
+                    <li data-i18n="cultures.add.step7">Enregistrez</li>
+                </ol>
+                
+                <div class="info-box">
+                    <span class="info-icon">💡</span>
+                    <div>
+                        <strong data-i18n="cultures.tip.title">Astuce :</strong>
+                        <span data-i18n="cultures.tip.desc">
+                            Vous pouvez créer plusieurs cultures de la même graine dans différents lieux
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- RÉCOLTES -->
+    <!-- ============================================ -->
+    <section id="harvests" class="guide-section bg-light">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🧺</span>
+                    <span data-i18n="harvests.title">Gestion des récoltes</span>
+                </h2>
+            </div>
+            
+            <div class="content-box">
+                <div class="highlight-box">
+                    <h3 data-i18n="harvests.concept.title">🎯 Concept</h3>
+                    <p data-i18n="harvests.concept.desc">
+                        Une <strong>récolte</strong> est toujours liée à une <strong>culture</strong>. 
+                        Elle permet d'enregistrer les quantités récoltées et d'analyser vos rendements.
+                    </p>
+                    <div class="formula-large">
+                        <span class="formula-item">🌿 Culture</span>
+                        <span class="formula-operator">→</span>
+                        <span class="formula-result">🧺 Récolte(s)</span>
+                    </div>
+                </div>
+                
+                <h3 data-i18n="harvests.add.title">➕ Enregistrer une récolte</h3>
+                <ol class="step-list">
+                    <li data-i18n="harvests.add.step1">Accédez à <strong>Récoltes</strong></li>
+                    <li data-i18n="harvests.add.step2">Cliquez sur <strong>+ Nouvelle récolte</strong></li>
+                    <li data-i18n="harvests.add.step3">Sélectionnez la <strong>culture</strong> concernée</li>
+                    <li data-i18n="harvests.add.step4">Indiquez la date de récolte</li>
+                    <li data-i18n="harvests.add.step5">Saisissez la quantité (kg, unités, etc.)</li>
+                    <li data-i18n="harvests.add.step6">Ajoutez des observations (qualité, calibre, etc.)</li>
+                    <li data-i18n="harvests.add.step7">Enregistrez</li>
+                </ol>
+                
+                <div class="info-box">
+                    <span class="info-icon">💡</span>
+                    <div>
+                        <strong data-i18n="harvests.tip.title">Astuce :</strong>
+                        <span data-i18n="harvests.tip.desc">
+                            Vous pouvez enregistrer plusieurs récoltes pour une même culture (récoltes successives)
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- RESSOURCES -->
+    <!-- ============================================ -->
+    <section id="resources" class="guide-section resources">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <span class="section-icon">🔗</span>
+                    <span data-i18n="resources.title">Ressources et liens utiles</span>
+                </h2>
+            </div>
+            
+            <div class="resources-grid">
+                <a href="https://github.com/votre-repo/jardin-app" target="_blank" class="resource-card">
+                    <span class="resource-icon">💻</span>
+                    <h3>GitHub</h3>
+                    <p data-i18n="resources.github">Code source et documentation technique</p>
+                </a>
+                
+                <a href="https://github.com/votre-repo/jardin-app/issues" target="_blank" class="resource-card">
+                    <span class="resource-icon">🐛</span>
+                    <h3>Issues</h3>
+                    <p data-i18n="resources.issues">Signaler un bug ou proposer une fonctionnalité</p>
+                </a>
+                
+                <a href="https://github.com/votre-repo/jardin-app/wiki" target="_blank" class="resource-card">
+                    <span class="resource-icon">📖</span>
+                    <h3>Wiki</h3>
+                    <p data-i18n="resources.wiki">Documentation complète et guides avancés</p>
+                </a>
+                
+                <a href="mailto:contact@jardin-app.com" class="resource-card">
+                    <span class="resource-icon">✉️</span>
+                    <h3>Contact</h3>
+                    <p data-i18n="resources.contact">Nous contacter pour toute question</p>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
+    <footer class="guide-footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>
+                    <span data-i18n="footer.made">Créé avec</span> ❤️ 
+                    <span data-i18n="footer.by">par la communauté open source</span>
+                </p>
+                <p class="footer-links">
+                    <a href="https://github.com/votre-repo/jardin-app/blob/main/LICENSE" target="_blank">
+                        <span data-i18n="footer.license">Licence MIT</span>
+                    </a>
+                    <span>•</span>
+                    <a href="admin/index.html">
+                        <span data-i18n="footer.admin">Espace Admin</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/translations.js"></script>
+    <script src="js/guide.js"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🌱</text></svg>" />
+  <title>🌱 Vue d'ensemble des cultures</title>
+  <link rel="stylesheet" href="css/overview.css">  <!-- ✅ Ajout de public/ -->
+  <!-- ✅ Protection d'authentification (optionnel - overview peut être accessible anonyme) -->
+  <!-- Décommentez la ligne suivante pour protéger cette page -->
+  <!-- <script src="js/auth.js"></script>
+  <script>requireAuth();</script> -->
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom: 12px;">
+      <a href="index.html" style="text-decoration: none;">← Jardinapp</a>
+    </div>
+    <h1>🌱 Vue d'ensemble des cultures</h1>
+    
+    <div class="controls">
+      <input type="text" class="search-box" id="searchBox" placeholder="🔍 Rechercher une plante...">
+      <select class="filter-select" id="addressFilter">
+        <option value="">📍 Toutes les adresses</option>
+      </select>
+    </div>
+
+    <div id="content" class="loading">Chargement des données...</div>
+  </div>
+
+  <script src="js/overview.js"></script>  <!-- ✅ Ajout de public/ -->
+</body>
+</html>

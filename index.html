@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>🌱</text></svg>" />
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- 📊 Chart.js pour les graphiques -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  
+  <!-- 📄 jsPDF et html2canvas pour l'export PDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- ✅ Protection d'authentification et API -->
+  <script src="./js/auth.js"></script>
+  <script src="./js/api.js"></script>
+  <script src="./js/admin.js"></script>
+  <script>requireAuth();</script>
+
+  <title>Jardinapp</title>
+</head>
+<body class="light">
+  <nav>
+    <ul>
+      <li data-tab="seeds" title="Graines">🌱</li>
+      <li class="active" data-tab="locations" title="Lieux">📍</li>
+      <li data-tab="cultures" title="Cultures">🌿</li>
+      <li data-tab="harvests" title="Récoltes">📦</li>
+      <li data-tab="bilan" title="Bilan">📊</li>
+      <li data-tab="overview" title="Vue d'ensemble">👁️</li>
+      <li data-tab="admin" title="Administration" style="display:none;">⚙️</li>
+    </ul>
+    <div class="nav-actions">
+      <a class="nav-action" href="guide.html" rel="noopener noreferrer" title="Guide" aria-label="Guide">ℹ️</a>
+      <button class="nav-action" id="logout-btn" title="Déconnexion" aria-label="Déconnexion">🚪</button>
+    </div>
+  </nav>
+  <div class="container">
+    <h2 id="tab-title"></h2>
+        <div class="help-text" data-i18n="help.locations"></div>
+    <div id="tools-container" class="tab-header">
+      <div id="tools-content"></div>
+    </div>
+    
+    <!-- Contenu Bilan -->
+<div id="bilan-container" class="is-hidden">
+  <h2 data-i18n="labels.report_title">📊 Rapport de Maraîchage</h2>
+  
+  <!-- BOUTONS (toujours visibles) -->
+  <div class="action-row">
+    <button id="btn-export-pdf" 
+            disabled
+            class="btn">
+      <span data-i18n="buttons.export_pdf">📄 Exporter en PDF</span>
+    </button>
+  </div>
+  
+  <!-- LOADER -->
+  <div id="report-loader" class="report-loader is-hidden">
+    <p data-i18n="labels.generating_report">⏳ Génération du rapport en cours...</p>
+  </div>
+  <div id="annuel"></div>
+  <!-- CONTENU DU RAPPORT (c'est ICI que reports.js va écrire) -->
+  <div id="report-content" class="is-hidden">
+    <!-- Le rapport sera généré ici par reports.js -->
+  </div>
+</div>
+
+    <!-- Contenu Admin -->
+    <div id="admin-container" class="is-hidden">
+      <div class="admin-header">
+        <h3>👥 Gestion des utilisateurs</h3>
+        <button class="btn-primary" onclick="showCreateUserForm()">➕ Nouvel utilisateur</button>
+      </div>
+      <div id="admin-users-list" class="admin-users-list">
+        <p class="loading">Chargement...</p>
+      </div>
+      
+      <!-- Modal Admin -->
+      <div id="admin-modal" class="modal">
+        <div class="modal-overlay" onclick="hideAdminModal()"></div>
+        <div class="modal-content" id="admin-modal-content"></div>
+      </div>
+    </div>
+    
+<!-- 📋 Grid SÉPARÉE pour chaque onglet -->
+<div id="seeds-container" class="card-grid is-hidden"></div>
+<div id="locations-container" class="card-grid is-hidden"></div>
+<div id="cultures-container" class="card-grid is-hidden"></div>
+<div id="harvests-container" class="card-grid is-hidden"></div>
+  </div>
+
+  <script src="js/translations.js"></script>
+
+  <!-- FOOTER: theme toggle, language selector, license/author -->
+  <footer class="app-footer">
+    <div class="footer-left">Jardinapp - Ecoboost.world - Antenna Foundation — Licence: MIT</div>
+    <div class="footer-right">
+      <button id="theme-toggle" aria-label="Changer le thème">🌙</button>
+      <select id="language-select" aria-label="Sélection de la langue">
+        <option value="fr">Français</option>
+        <option value="en">English</option>
+        <option value="pt">Português</option>
+      </select>
+    </div>
+  </footer>
+  <script src="js/utils.js"></script>
+  <script src="js/locations.js"></script>
+  <script src="js/seeds.js"></script>
+  <script src="js/cultures.js"></script>
+  <script src="js/harvests.js"></script>
+  <script src="js/reports/reports-data.js"></script>
+  <script src="js/reports/reports-overview.js"></script>
+  <script src="js/reports/reports-cultures.js"></script>
+  <script src="js/reports/reports-harvests.js"></script>
+  <script src="js/reports/reports-locations.js"></script>
+  <script src="js/reports/reports-performance.js"></script>
+  <script src="js/reports/reports-render.js"></script>
+  <script src="js/reports/reports-pdf.js"></script> <!-- ⬅️ NOUVEAU -->
+  <script src="js/reports/reports-main.js"></script> <!-- En dernier ! -->
+  <script>
+    // ========================================================================
+    // GESTION DE LA DÉCONNEXION
+    // ========================================================================
+    document.getElementById('logout-btn').addEventListener('click', () => {
+      if (confirm('Êtes-vous sûr de vouloir vous déconnecter ?')) {
+        logout();
+        window.location.href = 'login.html';
+      }
+    });
+
+    // ========================================================================
+    // GESTION DE LA LANGUE
+    // ========================================================================
+    function updateNavTranslations() {
+      const navTabEls = document.querySelectorAll('nav ul li[data-tab]');
+      navTabEls.forEach(el => {
+        const tab = el.getAttribute('data-tab');
+        el.title = getTranslation(`tabs.${tab}`);
+      });
+
+      const guideLink = document.querySelector('a.nav-action[href="guide.html"]');
+      if (guideLink) {
+        const label = getTranslationIfExists('buttons.guide') || 'Guide';
+        guideLink.title = label;
+        guideLink.setAttribute('aria-label', label);
+      }
+
+      const logoutBtn = document.getElementById('logout-btn');
+      if (logoutBtn) {
+        const label = getTranslation('buttons.logout');
+        logoutBtn.title = label;
+        logoutBtn.setAttribute('aria-label', label);
+      }
+    }
+
+    document.getElementById('language-select').addEventListener('change', (e) => {
+      setLanguage(e.target.value);
+      updateNavTranslations();
+      switchTab(activeTab);
+    });
+
+    // Init translations for nav tooltips
+    updateNavTranslations();
+
+    // ========================================================================
+    // GESTION DU THÈME
+    // ========================================================================
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      toggleTheme();
+    });
+
+    // ========================================================================
+    // GESTION DES ONGLETS
+    // ========================================================================
+    const tabs = document.querySelectorAll('nav ul li');
+    const helpText = document.querySelector('.help-text');
+    const toolsContainer = document.getElementById('tools-container');
+    const cardGrid = document.getElementById('card-grid');
+    const bilanContainer = document.getElementById('bilan-container');
+    let activeTab = 'locations';
+
+function switchTab(tabName) {
+  console.log(`🔄 Switching to tab: ${tabName}`);
+
+  if (tabName === 'overview') {
+    window.location.href = 'overview.html';
+    return;
+  }
+
+  // Retirer la classe active de tous les onglets
+  tabs.forEach(tab => tab.classList.remove('active'));
+
+  // Ajouter la classe active à l'onglet cliqué
+  const tabElement = document.querySelector(`[data-tab="${tabName}"]`);
+  if (tabElement) {
+    tabElement.classList.add('active');
+  }
+
+  activeTab = tabName;
+
+  // 🎯 RÉCUPÉRER TOUS LES CONTENEURS
+  const bilanContainer = document.getElementById('bilan-container');
+  const seedsContainer = document.getElementById('seeds-container');
+  const locationsContainer = document.getElementById('locations-container');
+  const culturesContainer = document.getElementById('cultures-container');
+  const harvestsContainer = document.getElementById('harvests-container');
+  const adminContainer = document.getElementById('admin-container');
+  const helpText = document.querySelector('.help-text');
+  const toolsContainer = document.getElementById('tools-container');
+
+  // 🎯 MASQUER TOUS LES CONTENEURS
+  bilanContainer.style.display = 'none';
+  seedsContainer.style.display = 'none';
+  locationsContainer.style.display = 'none';
+  culturesContainer.style.display = 'none';
+  harvestsContainer.style.display = 'none';
+  if (adminContainer) adminContainer.style.display = 'none';
+
+  const tabTitle = document.getElementById('tab-title');
+  if (tabTitle) {
+    const icons = {
+      seeds: '🌱',
+      locations: '📍',
+      cultures: '🌿',
+      harvests: '📦',
+      bilan: '📊',
+      admin: '⚙️'
+    };
+    const labelKey = tabName === 'overview' ? 'nav.overview' : `tabs.${tabName}`;
+    const label = getTranslation(labelKey);
+    tabTitle.textContent = icons[tabName] ? `${icons[tabName]} ${label}` : label;
+  }
+
+  if (tabName === 'bilan') {
+    // Mode BILAN : afficher uniquement bilan-container
+    toolsContainer.style.display = 'none';
+    helpText.style.display = 'none';
+    bilanContainer.style.display = 'block';
+    console.log('📊 Onglet Bilan activé');
+    if (typeof refreshBilan === 'function') {
+      refreshBilan();
+    }
+  } else if (tabName === 'admin') {
+    // Mode ADMIN : afficher uniquement admin-container
+    toolsContainer.style.display = 'none';
+    helpText.style.display = 'none';
+    if (adminContainer) {
+      adminContainer.style.display = 'block';
+      if (typeof loadAdminUsers === 'function') {
+        loadAdminUsers();
+      }
+    }
+    console.log('⚙️ Onglet Admin activé');
+  } else {
+    // Mode NORMAL : afficher tools et le conteneur correspondant
+    toolsContainer.style.display = 'block';
+    helpText.style.display = 'block';
+
+    // Afficher l'en-tête outils/titre
+    toolsContainer.style.display = 'flex';
+
+    // 🎯 AFFICHER LE CONTENEUR CORRESPONDANT
+    if (tabName === 'seeds') {
+      seedsContainer.style.display = 'grid';
+    } else if (tabName === 'locations') {
+      locationsContainer.style.display = 'grid';
+    } else if (tabName === 'cultures') {
+      culturesContainer.style.display = 'grid';
+    } else if (tabName === 'harvests') {
+      harvestsContainer.style.display = 'grid';
+    }
+
+    // Mettre à jour le texte d'aide
+    helpText.setAttribute('data-i18n', `help.${tabName}`);
+    helpText.textContent = getTranslation(`help.${tabName}`);
+
+    // Déclencher l'événement pour charger les données de l'onglet
+    console.log(`📡 Dispatching event for tab: ${tabName}`);
+    document.dispatchEvent(new Event(`${tabName}Updated`));
+  }
+}
+
+
+
+    // ========================================================================
+    // ÉCOUTEURS DES ONGLETS
+    // ========================================================================
+    tabs.forEach(tab => {
+      tab.removeEventListener('click', handleTabClick);
+      tab.addEventListener('click', handleTabClick);
+    });
+
+    function handleTabClick(e) {
+      const tabName = e.currentTarget.getAttribute('data-tab');
+      console.log(`🖱️ Tab clicked: ${tabName}`);
+      if (tabName) {
+        switchTab(tabName);
+      }
+    }
+
+    // Initialiser le titre d'onglet au chargement
+    switchTab(activeTab);
+
+// ========================================================================
+// GESTION DES BOUTONS BILAN
+// ========================================================================
+
+document.addEventListener('click', async (e) => {
+  // Bouton "Exporter en PDF"
+  if (e.target.id === 'btn-export-pdf' || e.target.closest('#btn-export-pdf')) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('📄 Export PDF demandé');
+    
+    if (typeof window.exportToPDF === 'function') {
+      await window.exportToPDF();
+    } else {
+      console.error('❌ Fonction exportToPDF non trouvée');
+      alert('❌ Fonction d\'export non disponible');
+    }
+  }
+});
+
+// ========================================================================
+// AUTO-ACTUALISATION DU BILAN
+// ========================================================================
+
+let bilanRefreshTimeout = null;
+async function refreshBilan() {
+  if (bilanRefreshTimeout) {
+    clearTimeout(bilanRefreshTimeout);
+  }
+
+  bilanRefreshTimeout = setTimeout(async () => {
+    const reportLoader = document.getElementById('report-loader');
+    const reportContent = document.getElementById('report-content');
+    if (reportLoader) reportLoader.style.display = 'block';
+    if (reportContent) reportContent.style.display = 'none';
+
+    if (typeof window.initReports === 'function') {
+      try {
+        await window.initReports();
+      } catch (error) {
+        console.error('❌ Erreur refresh bilan:', error);
+        if (reportLoader) reportLoader.style.display = 'none';
+      }
+    }
+  }, 150);
+}
+
+// Recalculer le bilan lorsque les données changent
+['culturesUpdated', 'harvestsUpdated', 'seedsUpdated', 'locationsUpdated'].forEach(evt => {
+  document.addEventListener(evt, () => {
+    if (activeTab === 'bilan') {
+      refreshBilan();
+    }
+  });
+});
+
+
+    // ========================================================================
+    // GESTIONNAIRE DES CLICS SUR LES CARTES
+    // ========================================================================
+    document.addEventListener('click', async (e) => {
+      if (activeTab === 'bilan') return; // Ignorer les clics sur les cartes dans l'onglet Bilan
+      
+      const card = e.target.closest('.location-card') || 
+                   e.target.closest('.seed-card') || 
+                   e.target.closest('.culture-card') || 
+                   e.target.closest('.harvest-card');
+      const addCard = e.target.closest('.add-card');
+
+      if (card && card.dataset.id) {
+        console.log(`🖱️ Clic sur carte avec ID: ${card.dataset.id}, onglet actif: ${activeTab}`);
+        
+        if (activeTab === 'locations') {
+          const locations = await loadLocations();
+          const location = locations.find(loc => loc.id === card.dataset.id);
+          if (location) showLocationModal(location);
+        } else if (activeTab === 'seeds') {
+          const seeds = await loadSeeds();
+          const categories = await loadSpecies();
+          const seed = seeds.find(s => s.id === card.dataset.id);
+          if (seed) showSeedModal(seed, categories);
+        } else if (activeTab === 'cultures') {
+          const cultures = await loadCultures();
+          const locations = await loadLocations();
+          const seeds = await loadSeeds();
+          const culture = cultures.find(c => c.id === card.dataset.id);
+          if (culture) showCultureModal(culture, locations, seeds);
+        } else if (activeTab === 'harvests') {
+          const harvests = await loadHarvests();
+          const cultures = await loadCultures();
+          const harvest = harvests.find(h => h.id === card.dataset.id);
+          if (harvest) showHarvestModal(harvest, cultures);
+        }
+      } else if (addCard) {
+        console.log(`🖱️ Clic sur carte d'ajout, onglet actif: ${activeTab}`);
+        
+        if (activeTab === 'locations') {
+          showLocationModal();
+        } else if (activeTab === 'seeds') {
+          const categories = await loadSpecies();
+          showSeedModal(null, categories);
+        } else if (activeTab === 'cultures') {
+          const locations = await loadLocations();
+          const seeds = await loadSeeds();
+          showCultureModal(null, locations, seeds);
+        } else if (activeTab === 'harvests') {
+          const cultures = await loadCultures();
+          showHarvestModal(null, cultures);
+        }
+      }
+    });
+
+    // ========================================================================
+    // INITIALISATION DE L'APPLICATION
+    // ========================================================================
+    console.log('🚀 === INITIALISATION DE L\'APPLICATION ===');
+    
+    initLocations();
+    initSeeds();
+    initCultures();
+    initHarvests();
+    initAdmin(); // Module admin (visible uniquement pour les admins)
+    
+    // ⚠️ On n'initialise PAS les rapports au démarrage
+    console.log('⏳ Module reports.js chargé (en attente du clic sur "Générer")');
+    
+    switchTab('cultures'); // Onglet par défaut
+    
+    console.log('✅ Application initialisée avec succès !');
+  </script>
+</body>
+</html>
